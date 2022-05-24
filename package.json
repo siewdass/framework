@@ -12,11 +12,9 @@
     "push": "git push"
   },
   "dependencies": {
-    "@types/node": "^17.0.35",
     "copy-webpack-plugin": "^10.2.4",
     "html-webpack-plugin": "^5.5.0",
     "http-server": "^14.1.0",
-    "reflect-metadata": "^0.1.13",
     "ts-loader": "^9.3.0",
     "typescript": "^4.6.4",
     "webpack": "^5.72.1",
