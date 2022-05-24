@@ -1,17 +1,8 @@
 const path = require( 'path' )
-const fs = require( 'fs' )
 
 const HtmlWebpackPlugin = require( 'html-webpack-plugin' )
-const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' )
-const CssMinimizerPlugin = require( 'css-minimizer-webpack-plugin' )
-const TerserPlugin = require( 'terser-webpack-plugin' )
-const CopyPlugin = require( 'copy-webpack-plugin' )
-const HtmlWebpackTagsPlugin = require( 'html-webpack-tags-plugin' )
-const BeautifyHtmlWebpackPlugin = require( 'beautify-html-webpack-plugin' )
-const HtmlBeautifyPlugin = require( 'html-beautify-webpack-plugin' )
 
-
-var MODULE = {
+module.exports = {
   watch: false,
   mode: 'development',
   plugins: [
@@ -47,10 +38,6 @@ var MODULE = {
     ]
   },
   optimization: {
-    minimizer: [
-      new TerserPlugin( ),
-      new CssMinimizerPlugin( )
-    ],
     minimize: false // JS & CSS MINIFY
   },
   module: {
@@ -62,6 +49,3 @@ var MODULE = {
     ]
   }
 }
-
-
-module.exports = MODULE
