@@ -1,14 +1,15 @@
-import { JSX } from './lib'
-import { Test, Tester } from './core'
+import { JSX } from '../libs/runtime'
+import { MODULE, ROUTE } from '../libs/core'
 
-//@Tester()
-class Home {
+@ROUTE( '/' )
+export class Home {
   text = 'Hello..'
   constructor( ) {
     console.log( 'INSTANCE', this.text )
   }
   change( ) {
     this.text = 'Hello World'
+    console.log( 'yes' )
   }
   render( ) {
     return (
@@ -22,27 +23,27 @@ class Home {
   }
 }
 
-let component = new Home( )
-let data = component.render( )
-let props = Object.getOwnPropertyNames( component )
-let all = data.getElementsByTagName( '*' )
-
-for ( let p in props ) {
-  for ( let i = 0; i < all.length; i++ ) {
-    if ( component[ props[ p ] ] == all[ i ].innerHTML ) {
-      const original = component[ props[ p ] ]
-      Object.defineProperty( component, props[ p ], {
-        get( ) {
-          return this.value
-        },
-        set( value ) {
-          all[ i ].innerHTML = value
-          this.value = value
-        }
-      } )
-      component[ props[ p ] ] = original
-    }
+@ROUTE( '/about' )
+export class About {
+  text = 'About'
+  constructor( ) {
+    console.log( 'INSTANCE', this.text )
+  }
+  render( ) {
+    return (
+      <view>
+        <p value={ this.text } />
+      </view>
+    )
   }
 }
 
-document.body.appendChild( data )
+@MODULE( {
+  routes: [ Home, About ],
+  views: [ ],
+  components: [ ],
+  services: [ ]
+} )
+export class Application {}
+
+new Application 
