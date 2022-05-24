@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "target": "es6",
+    //"module": "es2020",
+    "types": [
+      "reflect-metadata", "node"
+    ],
+    "moduleResolution": "node",
+    "jsx": "react",
+    "jsxFactory": "JSX",
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --config webpack.dev.js",
+    "prod": "webpack --config webpack.prod.js",
+    "serve": "http-server -c-1 ./dist --port 3000 --silent --proxy http://localhost:3000?",
+    "pull": "git pull",
+    "commit": "git add . && git commit -m '-'",
+    "push": "git push"
+  },
+  "dependencies": {
+    "@types/pug": "^2.0.6",
+    "@types/reflect-metadata": "^0.1.0",
+    "babel-loader": "^8.2.5",
+    "beautify-html-webpack-plugin": "^1.0.3",
+    "copy-webpack-plugin": "^10.2.4",
+    "css-loader": "^6.7.1",
+    "css-minimizer-webpack-plugin": "^3.4.1",
+    "html-beautify-webpack-plugin": "^1.0.5",
+    "html-webpack-tags-plugin": "^3.0.2",
+    "http-server": "^14.1.0",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
+    "mini-css-extract-plugin": "^2.6.0",
+    "path": "^0.12.7",
+    "path-browserify": "^1.0.1",
+    "pug": "^3.0.2",
+    "reflect-metadata": "^0.1.13",
+    "simple-pug-loader": "^0.2.1",
+    "terser-webpack-plugin": "^5.3.1",
+    "ts-loader": "^9.3.0",
+    "typescript": "^4.6.4",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.34"
+  }
+}
