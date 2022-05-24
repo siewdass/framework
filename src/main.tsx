@@ -1,4 +1,4 @@
-import { JSX } from '../libs/runtime'
+import { RUNTIME } from '../libs/runtime'
 import { MODULE, ROUTE } from '../libs/core'
 
 @ROUTE( '/' )

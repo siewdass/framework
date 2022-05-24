@@ -37,7 +37,7 @@ function DOMparseNode( tag, properties, children ) {
   return element
 }
 
-export function JSX( tag, properties, ...children ) {
+export function RUNTIME( tag, properties, ...children ) {
   if( typeof tag === 'function' ) {
     return tag( { ...nonNull( properties ), children } )
   }
