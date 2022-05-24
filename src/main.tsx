@@ -8,8 +8,8 @@ export class Home {
     console.log( 'INSTANCE', this.text )
   }
   change( ) {
+    console.log( this.text )
     this.text = 'Hello World'
-    console.log( 'yes' )
   }
   render( ) {
     return (
