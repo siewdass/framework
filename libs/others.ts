@@ -6,15 +6,13 @@ export class Router {
   constructor( routes ) {
     this.routes = routes
     const { location: { pathname = '/', search } } = window
-    console.log( 'path', pathname )
     if ( search ) {
       this.query = search
       this.setParams( )
-      console.log( 'params', this.params )
     }
     const enabled = this.routes.filter( item => item.path === pathname )
-    const path = enabled ? pathname : '/'
-    this.setRoute( path + this.query )
+    const path = enabled ? pathname + this.query: '/'
+    this.setRoute( path )
   }
 
   private setParams( ): void {

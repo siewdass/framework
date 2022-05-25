@@ -3,14 +3,15 @@ import { MODULE, ROUTE, VIEW } from '../libs/core'
 import { Router } from '../libs/others'
 
 @ROUTE( '/' )
+@VIEW( )
 export class Home {
-  text = 'Hello..'
+  text = 'Ho..'
   constructor( router: Router ) {
-    console.log( 'INSTANCE', this.text )
+    console.log( 'Instance:', this.text )
   }
   change( ) {
     console.log( this.text )
-    this.text = 'Hello World'
+    this.text = 'Home'
   }
   render( ) {
     return (
@@ -28,7 +29,7 @@ export class Home {
 export class About {
   text = 'About'
   constructor( ) {
-    console.log( 'INSTANCE', this.text )
+    console.log( 'Instance:', this.text )
   }
   render( ) {
     return (
