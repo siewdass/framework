@@ -1,31 +1,44 @@
 export class Router {
-  routes: any
+  private routes: any
+  private params: any = {}
+  private query: string = ''
 
   constructor( routes ) {
     this.routes = routes
-    const { location: { pathname = '/' } } = window;
-    let routed = false
-    for ( let i in this.routes ) {
-      const { path } = this.routes[ i ]
-      if ( path == pathname ) {
-        this.routing( path )
-        routed = true
-      }
+    const { location: { pathname = '/', search } } = window
+    console.log( 'path', pathname )
+    if ( search ) {
+      this.query = search
+      this.setParams( )
+      console.log( 'params', this.params )
     }
-    if ( !routed ) {
-      this.routing( )
+    const enabled = this.routes.filter( item => item.path === pathname )
+    const path = enabled ? pathname : '/'
+    this.setRoute( path + this.query )
+  }
+
+  private setParams( ): void {
+    let p = this.query.replace( '?', '' ).split( '&' )
+    for ( let i in p ) {
+      let data = p[ i ].split( '=' )
+      this.params[ data[ 0 ] ] = data[ 1 ]
     }
   }
 
-  routing( route = '/' ) {
+  public getParams( ) {
+    return this.params
+  }
+
+  public setRoute( route = '/' ) {
     for ( let i in this.routes ) {
       const { path, view } = this.routes[ i ]
-      if ( path == route ) {
+      if ( path == route || route.startsWith( path ) ) {
         const container = document.querySelector( 'router' )
         if ( container ) {
           container.innerHTML = ''
           container.appendChild( view )
-          window.history.pushState( { }, 'routing', path )
+          const PATH = path == '/' ? path : route
+          window.history.pushState( { }, 'routing', PATH )
         }
       }
     }

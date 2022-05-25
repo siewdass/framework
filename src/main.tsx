@@ -1,10 +1,11 @@
 import { RUNTIME } from '../libs/runtime'
-import { MODULE, ROUTE } from '../libs/core'
+import { MODULE, ROUTE, VIEW } from '../libs/core'
+import { Router } from '../libs/others'
 
 @ROUTE( '/' )
 export class Home {
   text = 'Hello..'
-  constructor( ) {
+  constructor( router: Router ) {
     console.log( 'INSTANCE', this.text )
   }
   change( ) {
@@ -38,9 +39,20 @@ export class About {
   }
 }
 
+@VIEW( )
+export class Loading {
+  render( ) {
+    return (
+      <view>
+        <p value='Loading' />
+      </view>
+    )
+  }
+}
+
 @MODULE( {
   routes: [ Home, About ],
-  views: [ ],
+  views: [ Loading ],
   components: [ ],
   services: [ ]
 } )

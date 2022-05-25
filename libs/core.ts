@@ -27,3 +27,9 @@ export function ROUTE( path: String ) {
     target.prototype.path = path
   }
 }
+
+export function VIEW( ) {
+  return function( target: Function ) {
+    target.prototype.view = true
+  }
+}
