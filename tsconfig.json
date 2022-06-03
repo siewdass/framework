@@ -6,5 +6,8 @@
     "target": "es6",
     "jsx": "react",
     "jsxFactory": "RUNTIME",
+    "types": [
+      "reflect-metadata", "node"
+    ],
   }
 }

@@ -39,7 +39,12 @@ function DOMparseNode( tag, properties, children ) {
 
 export function RUNTIME( tag, properties, ...children ) {
   if( typeof tag === 'function' ) {
-    return tag( { ...nonNull( properties ), children } )
+    try {
+      return tag( { ...nonNull( properties ), children } )
+    } catch {
+      const TAG = new tag
+      return TAG.render( { ...nonNull( properties ), children } )
+    }
   }
   return DOMparseNode( tag, properties, children )
 }

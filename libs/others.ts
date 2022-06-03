@@ -1,14 +1,19 @@
 export class Router {
+
   private routes: any
   private params: any = {}
   private query: string = ''
+  private interpolation = new Interpolation
+  private view: string
+  private instance: any
 
   constructor( routes ) {
     this.routes = routes
-    const { location: { pathname = '/', search } } = window
+    const { location: { pathname, search } } = window
     if ( search ) {
       this.query = search
       this.setParams( )
+      console.log( this.params )
     }
     const enabled = this.routes.filter( item => item.path === pathname )
     const path = enabled ? pathname + this.query: '/'
@@ -27,22 +32,45 @@ export class Router {
     return this.params
   }
 
-  public setRoute( route = '/' ) {
+  public setRoute( path: string ) {
     for ( let i in this.routes ) {
-      const { path, view } = this.routes[ i ]
-      if ( path == route || route.startsWith( path ) ) {
-        const container = document.querySelector( 'router' )
-        if ( container ) {
-          container.innerHTML = ''
-          container.appendChild( view )
-          const PATH = path == '/' ? path : route
-          window.history.pushState( { }, 'routing', PATH )
+      const { route, view } = this.routes[ i ]
+      if ( route == path ) {
+        if ( this.view !== view.name ) {
+          this.instance = new view
+          this.view = view.name
+          const element = this.interpolation.generate( this.instance )
+          document.body.innerHTML = ''
+          document.body.appendChild( element )
         }
+        const container = document.querySelector( 'router' )
+        if ( container && this.instance.subroutes ) {
+          container.innerHTML = ''
+          for ( let i in this.instance.subroutes ) {
+            if ( this.instance.subroutes[ i ].default ) {
+              const instance = new this.instance.subroutes[ i ].component
+              const element = this.interpolation.generate( instance )
+              container.appendChild( element )
+              break
+            }
+          }
+        }
+        window.history.pushState( { }, 'routing', route )
       }
     }
   }
 
+  setSubRoute( ) {  
+  }
+
 }
+
+// route.startsWith( path ) ) {
+//const container = document.querySelector( 'router' )
+//if ( container ) {
+//container.innerHTML = ''
+//container.appendChild( v )
+//const PATH = path == '/' ? route : path
 
 export class Interpolation {
   generate( instance ) {
@@ -70,3 +98,4 @@ export class Interpolation {
     return view
   }
 }
+

@@ -1,62 +1,91 @@
 import { RUNTIME } from '../libs/runtime'
-import { MODULE, ROUTE, VIEW } from '../libs/core'
+import { MODULE, ROUTE, SUBROUTE, VIEW, COMPONENT } from '../libs/core'
 import { Router } from '../libs/others'
+
+@COMPONENT( )
+export class Home {
+  prop = 'Home'
+  constructor( ) { }
+  render( ) {
+    return (
+      <p>{ this.prop }</p>
+    )
+  }
+}
+
+@COMPONENT( )
+export class About {
+  prop = 'About'
+  constructor( ) { }
+  render( ) {
+    return (
+      <p>{ this.prop }</p>
+    )
+  }
+}
+
+@ROUTE( '/login' )
+@VIEW( )
+export class Login {
+  prop = 'Log..'
+  constructor( router: Router ) {
+    console.log( 'Instance:', this.prop )
+  }
+  change( ) {
+    this.prop = 'Login'
+    console.log( this.prop )
+  }
+  render( ) {
+    return (
+      <div>
+        <button onclick={ ( ) => this.change( ) }>{ this.prop }</button>
+      </div>
+    )
+  }
+}
 
 @ROUTE( '/' )
 @VIEW( )
-export class Home {
-  text = 'Ho..'
-  constructor( router: Router ) {
-    console.log( 'Instance:', this.text )
-  }
-  change( ) {
-    console.log( this.text )
-    this.text = 'Home'
-  }
-  render( ) {
-    return (
-      <view>
-        <button
-          press={ ( ) => this.change( ) }
-          value={ this.text }
-        />
-      </view>
-    )
-  }
-}
+export class App {
 
-@ROUTE( '/about' )
-export class About {
-  text = 'About'
+  @SUBROUTE( { path: 'home', default: true } )
+  home: Home
+
+  @SUBROUTE( { path: 'about' } )
+  about: About
+
+  router: Router
+
   constructor( ) {
-    console.log( 'Instance:', this.text )
   }
+
+  change( path: string ) {
+    console.log( path )
+    //this.router.setRoute( path )
+  }
+
   render( ) {
     return (
-      <view>
-        <p value={ this.text } />
-      </view>
+      <div>
+        <navbar>
+          <ul>
+            <li>
+              <a onclick={ ( ) => this.change( 'home' ) }>Home</a>
+            </li>
+            <li>
+              <a onclick={ ( ) => this.change( 'about' ) }>About</a>
+            </li>
+          </ul>
+        </navbar>
+        <router></router>
+      </div>
     )
   }
+
 }
 
-@VIEW( )
-export class Loading {
-  render( ) {
-    return (
-      <view>
-        <p value='Loading' />
-      </view>
-    )
-  }
+@MODULE( { views: [ App, Login ], components: [ Home, About ], services: [ ] } )
+export class Frontend {
 }
 
-@MODULE( {
-  routes: [ Home, About ],
-  views: [ Loading ],
-  components: [ ],
-  services: [ ]
-} )
-export class Application {}
-
-new Application 
+new Frontend
