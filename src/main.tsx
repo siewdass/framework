@@ -58,10 +58,13 @@ export class App {
   @SUBROUTE( { path: 'about' } )
   about: About
 
+  prop = 'App'
+
   //@ROUTER( )
   //router: Router
 
   constructor( ) {
+    console.log( 'Instance:', this.prop )
   }
 
   change( path: string ) {
