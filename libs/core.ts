@@ -21,7 +21,7 @@ export function MODULE( param: any ) {
       const view = views[ v ]
       if ( view.prototype.route ) {
         const route = view.prototype.route
-        ROUTES.push( { route, view } )
+        ROUTES[ route ] = view
       }
     }
     global.router = new Router( ROUTES )
@@ -34,21 +34,21 @@ export function ROUTE( path: String ) {
   }
 }
 
-/*export function SUBROUTE( unknow: any ) {
-  return function( target: Function ) {
-    //target.prototype.subroute = path
-  }
-}*/
 
+export function ROUTER( ) {
+  return function( target: Object, property: string ) {
+    target[ property ] = global.router
+  }
+}
 
 export function SUBROUTE( params: any ) {
   return function( target: Object, property: string  ) { 
     if ( !target[ 'subroutes' ] ) {
-      target[ 'subroutes' ] = [ ]
+      target[ 'subroutes' ] = { }
     }
     const type = Reflect.getMetadata( 'design:type', target, property )
     params.component = global.components[ type.name ]
-    target[ 'subroutes' ].push( params )
+    target[ 'subroutes' ][ type.name ] = params
   }
 }
 

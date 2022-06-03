@@ -1,5 +1,5 @@
 import { RUNTIME } from '../libs/runtime'
-import { MODULE, ROUTE, SUBROUTE, VIEW, COMPONENT } from '../libs/core'
+import { MODULE, ROUTE, SUBROUTE, VIEW, COMPONENT, ROUTER } from '../libs/core'
 import { Router } from '../libs/others'
 
 @COMPONENT( )
@@ -54,14 +54,15 @@ export class App {
   @SUBROUTE( { path: 'about' } )
   about: About
 
-  router: Router
+  //@ROUTER( )
+  //router: Router
 
   constructor( ) {
   }
 
   change( path: string ) {
     console.log( path )
-    //this.router.setRoute( path )
+    global.router.setSubroute( path )
   }
 
   render( ) {

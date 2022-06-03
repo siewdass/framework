@@ -6,25 +6,23 @@ export class Router {
   private interpolation = new Interpolation
   private view: string
   private instance: any
+  private path: string
 
   constructor( routes ) {
     this.routes = routes
     const { location: { pathname, search } } = window
-    if ( search ) {
-      this.query = search
-      this.setParams( )
-      console.log( this.params )
-    }
-    const enabled = this.routes.filter( item => item.path === pathname )
-    const path = enabled ? pathname + this.query: '/'
-    this.setRoute( path )
+    this.setParams( search )
+    this.setRoute( pathname )
   }
 
-  private setParams( ): void {
-    let p = this.query.replace( '?', '' ).split( '&' )
-    for ( let i in p ) {
-      let data = p[ i ].split( '=' )
-      this.params[ data[ 0 ] ] = data[ 1 ]
+  private setParams( search: string ): void {
+    if ( search ) {
+      let p = this.query.replace( '?', '' ).split( '&' )
+      for ( let i in p ) {
+        let data = p[ i ].split( '=' )
+        this.params[ data[ 0 ] ] = data[ 1 ]
+      }
+      console.log( this.params )
     }
   }
 
@@ -33,45 +31,51 @@ export class Router {
   }
 
   public setRoute( path: string ) {
-    for ( let i in this.routes ) {
-      const { route, view } = this.routes[ i ]
-      if ( route == path ) {
-        if ( this.view !== view.name ) {
-          this.instance = new view
-          this.view = view.name
-          const element = this.interpolation.generate( this.instance )
-          document.body.innerHTML = ''
-          document.body.appendChild( element )
-        }
-        const container = document.querySelector( 'router' )
-        if ( container && this.instance.subroutes ) {
+    let view = this.routes[ path ]
+    if ( !view ) {
+      path = '/'
+      view = this.routes[ path ]
+    }
+    this.instance = new view
+    const html = this.interpolation.generate( this.instance )
+    document.body.innerHTML = ''
+    document.body.appendChild( html )
+    const container = document.querySelector( 'router' )
+    if ( container && this.instance.subroutes ) {
+      for ( let i in this.instance.subroutes ) {
+        if ( this.instance.subroutes[ i ].default ) {
           container.innerHTML = ''
-          for ( let i in this.instance.subroutes ) {
-            if ( this.instance.subroutes[ i ].default ) {
-              const instance = new this.instance.subroutes[ i ].component
-              const element = this.interpolation.generate( instance )
-              container.appendChild( element )
-              break
-            }
-          }
+          const instance = new this.instance.subroutes[ i ].component
+          const element = this.interpolation.generate( instance )
+          container.appendChild( element )
+          break
         }
-        window.history.pushState( { }, 'routing', route )
+      }
+    }
+    window.history.pushState( { }, 'routing', path )
+  }
+
+  public setSubroute( path: string ) {
+    const container = document.querySelector( 'router' )
+    if ( container ) {
+      let instance: object, defaults: boolean
+      for ( let i in this.instance.subroutes ) {
+        if ( this.instance.subroutes[ i ].path == path ) {
+          instance = new this.instance.subroutes[ i ].component
+          defaults = this.instance.subroutes[ i ].default
+        }
+      }
+      if ( instance ) {
+        const element = this.interpolation.generate( instance )
+        container.innerHTML = ''
+        container.appendChild( element )
+        path = defaults ? '/' : path
+        window.history.pushState( { }, 'routing', path )
       }
     }
   }
 
-  setSubRoute( ) {  
-  }
-
 }
-
-// route.startsWith( path ) ) {
-//const container = document.querySelector( 'router' )
-//if ( container ) {
-//container.innerHTML = ''
-//container.appendChild( v )
-//const PATH = path == '/' ? route : path
-
 export class Interpolation {
   generate( instance ) {
     let view = instance.render( )
