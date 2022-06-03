@@ -5,7 +5,9 @@ import { Router } from '../libs/others'
 @COMPONENT( )
 export class Home {
   prop = 'Home'
-  constructor( ) { }
+  constructor( ) {
+    console.log( 'Instance:', this.prop )
+  }
   render( ) {
     return (
       <p>{ this.prop }</p>
@@ -16,7 +18,9 @@ export class Home {
 @COMPONENT( )
 export class About {
   prop = 'About'
-  constructor( ) { }
+  constructor( ) {
+    console.log( 'Instance:', this.prop )
+  }
   render( ) {
     return (
       <p>{ this.prop }</p>
