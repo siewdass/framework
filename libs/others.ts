@@ -46,6 +46,7 @@ export class Router {
       for ( let i in this.instance.subroutes ) {
         if ( this.instance.subroutes[ i ].default ) {
           container.innerHTML = ''
+          this.subroute = this.instance.subroutes[ i ].path
           const instance = new this.instance.subroutes[ i ].component
           const element = this.interpolation.generate( instance )
           container.appendChild( element )

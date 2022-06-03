@@ -1,10 +1,24 @@
 import { RUNTIME } from '../libs/runtime'
-import { MODULE, ROUTE, SUBROUTE, VIEW, COMPONENT, ROUTER } from '../libs/core'
+import { MODULE, ROUTE, SUBROUTE, VIEW, COMPONENT } from '../libs/core'
 import { Router } from '../libs/others'
 
 @COMPONENT( )
+export class Title {
+  prop: string = 'Title'
+  constructor( ) {
+    console.log( 'Instance:', this.prop )
+  }
+  render( ) {
+    return (
+      <p>{ this.prop }</p>
+    )
+  }
+}
+
+
+@COMPONENT( )
 export class Home {
-  prop = 'Home'
+  prop: string = 'Home'
   constructor( ) {
     console.log( 'Instance:', this.prop )
   }
@@ -17,7 +31,7 @@ export class Home {
 
 @COMPONENT( )
 export class About {
-  prop = 'About'
+  prop: string = 'About'
   constructor( ) {
     console.log( 'Instance:', this.prop )
   }
@@ -31,7 +45,7 @@ export class About {
 @ROUTE( '/login' )
 @VIEW( )
 export class Login {
-  prop = 'Log..'
+  prop: string = 'Log..'
   constructor( router: Router ) {
     console.log( 'Instance:', this.prop )
   }
@@ -48,6 +62,16 @@ export class Login {
   }
 }
 
+@ROUTE( '/daniela' )
+@VIEW( )
+class Daniela {
+  render( ) {
+    return (
+      <p>daniela</p>
+    )
+  }
+}
+
 @ROUTE( '/' )
 @VIEW( )
 export class App {
@@ -58,10 +82,7 @@ export class App {
   @SUBROUTE( { path: 'about' } )
   about: About
 
-  prop = 'App'
-
-  //@ROUTER( )
-  //router: Router
+  prop: string = 'App'
 
   constructor( ) {
     console.log( 'Instance:', this.prop )
@@ -75,6 +96,7 @@ export class App {
   render( ) {
     return (
       <div>
+        <Title></Title>
         <navbar>
           <ul>
             <li>
