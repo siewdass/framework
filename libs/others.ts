@@ -7,6 +7,7 @@ export class Router {
   private view: string
   private instance: any
   private path: string
+  private subroute: string
 
   constructor( routes ) {
     this.routes = routes
@@ -56,6 +57,8 @@ export class Router {
   }
 
   public setSubroute( path: string ) {
+    if ( this.subroute === path ) { return }
+
     const container = document.querySelector( 'router' )
     if ( container ) {
       let instance: object, defaults: boolean
@@ -69,6 +72,7 @@ export class Router {
         const element = this.interpolation.generate( instance )
         container.innerHTML = ''
         container.appendChild( element )
+        this.subroute = path
         path = defaults ? '/' : path
         window.history.pushState( { }, 'routing', path )
       }
