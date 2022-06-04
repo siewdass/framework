@@ -73,12 +73,10 @@ export class Router {
     } else {
       window.history.pushState( { }, 'routing', this.route )
     }
-
   }
 
   public setSubroute( path: string ) {
     if ( this.subroute === path ) { return }
-
     const container = document.querySelector( 'router' )
     if ( container ) {
       const instance = new this.instance.subroutes[ path ].component
@@ -90,7 +88,6 @@ export class Router {
       this.path = defaults ? this.route : this.route + this.subroute
       window.history.pushState( { }, 'routing', this.path )
     }
-
   }
 
 }
