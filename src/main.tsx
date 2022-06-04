@@ -62,16 +62,6 @@ export class Login {
   }
 }
 
-@ROUTE( '/daniela' )
-@VIEW( )
-class Daniela {
-  render( ) {
-    return (
-      <p>daniela</p>
-    )
-  }
-}
-
 @ROUTE( '/' )
 @VIEW( )
 export class App {
@@ -89,7 +79,6 @@ export class App {
   }
 
   change( path: string ) {
-    console.log( path )
     global.router.setSubroute( path )
   }
 

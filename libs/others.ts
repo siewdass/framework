@@ -6,7 +6,9 @@ export class Router {
   private interpolation = new Interpolation
   private view: string
   private instance: any
+
   private path: string
+  private route: string
   private subroute: string
 
   constructor( routes ) {
@@ -31,30 +33,47 @@ export class Router {
     return this.params
   }
 
-  public setRoute( path: string ) {
-    let view = this.routes[ path ]
-    if ( !view ) {
-      path = '/'
-      view = this.routes[ path ]
-    }
-    this.instance = new view
-    const html = this.interpolation.generate( this.instance )
-    document.body.innerHTML = ''
-    document.body.appendChild( html )
-    const container = document.querySelector( 'router' )
-    if ( container && this.instance.subroutes ) {
-      for ( let i in this.instance.subroutes ) {
-        if ( this.instance.subroutes[ i ].default ) {
-          container.innerHTML = ''
-          this.subroute = this.instance.subroutes[ i ].path
-          const instance = new this.instance.subroutes[ i ].component
-          const element = this.interpolation.generate( instance )
-          container.appendChild( element )
-          break
+  private validSubroute( route: string, path: string ): string {
+    if ( route.endsWith( '/' ) ) {
+      const subroutes = this.routes[ route ].prototype.subroutes
+      if ( subroutes ) {
+        for ( let i in subroutes ) {
+          const sub = i.toLowerCase( ), s = path.split( '/' )[ 1 ]
+          if ( path === '/' && subroutes[ i ].default ) {
+            return sub
+          } else {
+            if ( sub === s ) { return sub }
+          }
         }
       }
     }
-    window.history.pushState( { }, 'routing', path )
+    return undefined
+  }
+
+  private validRoute( path: string ): string {
+    for ( let i in this.routes ) {
+      if ( this.routes[ path ] ) {
+        return path
+      }
+    }
+    return '/'
+  }
+
+  public setRoute( path: string ) {
+    this.route = this.validRoute( path )
+    let subroute = this.validSubroute( this.route, path )
+
+    this.instance = new this.routes[ this.route ]
+    const html = this.interpolation.generate( this.instance )
+    document.body.innerHTML = ''
+    document.body.appendChild( html )
+
+    if ( subroute ) {
+      this.setSubroute( subroute )
+    } else {
+      window.history.pushState( { }, 'routing', this.route )
+    }
+
   }
 
   public setSubroute( path: string ) {
@@ -62,25 +81,24 @@ export class Router {
 
     const container = document.querySelector( 'router' )
     if ( container ) {
-      let instance: object, defaults: boolean
-      for ( let i in this.instance.subroutes ) {
-        if ( this.instance.subroutes[ i ].path == path ) {
-          instance = new this.instance.subroutes[ i ].component
-          defaults = this.instance.subroutes[ i ].default
-        }
+      const instance = new this.instance.subroutes[ path ].component
+      const element = this.interpolation.generate( instance )
+      container.innerHTML = ''
+      container.appendChild( element )
+      this.subroute = path
+      if ( this.instance.subroutes[ path ].default ) {
+        this.path = this.route
+      } else {
+        this.path = this.route + this.subroute
       }
-      if ( instance ) {
-        const element = this.interpolation.generate( instance )
-        container.innerHTML = ''
-        container.appendChild( element )
-        this.subroute = path
-        path = defaults ? '/' : path
-        window.history.pushState( { }, 'routing', path )
-      }
+
+      window.history.pushState( { }, 'routing', this.path )
     }
+
   }
 
 }
+
 export class Interpolation {
   generate( instance ) {
     let view = instance.render( )

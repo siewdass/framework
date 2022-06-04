@@ -47,8 +47,9 @@ export function SUBROUTE( params: any ) {
       target[ 'subroutes' ] = { }
     }
     const type = Reflect.getMetadata( 'design:type', target, property )
+    const key = type.name.toLowerCase( )
     params.component = global.components[ type.name ]
-    target[ 'subroutes' ][ type.name ] = params
+    target[ 'subroutes' ][ key ] = params
   }
 }
 
