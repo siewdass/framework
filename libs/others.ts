@@ -82,16 +82,12 @@ export class Router {
     const container = document.querySelector( 'router' )
     if ( container ) {
       const instance = new this.instance.subroutes[ path ].component
+      const defaults = this.instance.subroutes[ path ].default
       const element = this.interpolation.generate( instance )
       container.innerHTML = ''
       container.appendChild( element )
       this.subroute = path
-      if ( this.instance.subroutes[ path ].default ) {
-        this.path = this.route
-      } else {
-        this.path = this.route + this.subroute
-      }
-
+      this.path = defaults ? this.route : this.route + this.subroute
       window.history.pushState( { }, 'routing', this.path )
     }
 
